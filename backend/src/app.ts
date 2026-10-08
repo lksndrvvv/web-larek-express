@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import path from 'path';
+import { errors } from 'celebrate';
 import { DB_ADDRESS, PORT } from './config';
 import productRouter from './routes/product';
 import orderRouter from './routes/order';
@@ -21,6 +22,7 @@ app.use((_req, _res, next) => {
   next(new NotFoundError('Маршрут не найден'));
 });
 
+app.use(errors());
 app.use(errorHandler);
 
 mongoose.connect(DB_ADDRESS)
