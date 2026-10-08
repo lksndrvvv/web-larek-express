@@ -40,7 +40,7 @@ export const createProduct = (
     price,
   })
     .then((product) => {
-      res.send(product);
+      res.status(201).send(product);
     })
     .catch((error) => {
       if (error instanceof MongooseError.ValidationError) {
