@@ -5,6 +5,8 @@ import path from 'path';
 import { DB_ADDRESS, PORT } from './config';
 import productRouter from './routes/product';
 import orderRouter from './routes/order';
+import NotFoundError from './errors/not-found-error';
+import errorHandler from './middlewares/error-handler';
 
 const app = express();
 
@@ -14,6 +16,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/product', productRouter);
 app.use('/order', orderRouter);
+
+app.use((_req, _res, next) => {
+  next(new NotFoundError('Маршрут не найден'));
+});
+
+app.use(errorHandler);
 
 mongoose.connect(DB_ADDRESS)
   .then(() => {

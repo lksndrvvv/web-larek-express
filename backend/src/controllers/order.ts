@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { faker } from '@faker-js/faker';
 import Product from '../models/product';
+import BadRequestError from '../errors/bad-request-error';
 
 const createOrder = (
   req: Request,
@@ -25,7 +26,10 @@ const createOrder = (
         || hasUnavailableProduct
         || orderTotal !== total
       ) {
-        throw new Error('Некорректные данные заказа');
+        next(new BadRequestError(
+          'Некорректные данные заказа',
+        ));
+        return;
       }
 
       res.send({
